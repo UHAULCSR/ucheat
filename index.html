@@ -1,0 +1,510 @@
+<html lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="viewport" content="initial-scale=1, user-scalable=no, maximum-scale=1" /> 
+	<link rel="apple-touch-icon" sizes="150x150" href="u.png"/>
+	<link rel="icon" type="image/png" sizes="150x150" href="u.png"/>
+	<meta name="apple-mobile-web-app-title" content="U-Cheat">
+  <title>U-Cheat : UHAUL Rental Cheat Sheet</title>
+	<style>
+		* {margin: 0; padding: 0; border: 0; line-height: 1; }
+		body { font-size: 20px; }
+		h1, h2, h3, h4, h5, h6 { font-size: 1.3em; text-align: center; }
+		a {text-decoration: none;}
+		
+		body > h1.title {font-family: sans-serif; font-size.9em; font-weight: normal; margin-top: 1em; }
+		body > h2.tag {margin: 0 10%; color: #ff5314; font-family: sans-serif; font-size: 1.2em; letter-spacing: 2px; font-weight: bold; font-variant: small-caps }
+		body > p.disclaimer {font-family: sans-serif; font-size: .5em; margin: 1em 5%; padding: 1px 1em; border: 1px solid red; text-align: center; }
+		
+		.group {border: .5em solid #000;}
+		.group > h3 {color: #fff; background-color: #FF5314; padding: .5em 0 .3em 0;}
+		
+		.items {display: flex; flex-wrap: wrap; justify-content: center; align-items: stretch; }
+		.items .item { min-width: 300px; padding: 15px; flex: 1 1 1;}
+		
+		@media only screen and (max-width: 600px) {
+			.items .item {border-top: 1px solid #000;}
+			.items .item:first-child {border-top: 0}
+		}
+		
+		.items .item ul {display: none; margin-top: .5em; }
+		.items .item li { list-style: square outside; font-size: 1em; font-weight: normal; margin: 0 0 .5em 1em;}	
+		.items .item img {display: block; max-width: 305px; margin: 10px auto 0 auto;} 
+		.mt img {max-height: 100px;}
+		.aa img {max-height: 100px;}
+		.code {display: inline-block; padding: 3px 6px 1px 6px; background-color: #ddd; font-family: monospace; font-weight: normal;}
+		.items .item h4 .code {font-size: .6em}
+		.items .item h4 li .code {font-size: .8em}
+		
+		.items .item h4.subtitle {font-size: .8em}
+		.items .item h4.alert { margin: 10px; }
+		.items .item h4.alert span { font-size: .7em; font-variant: small-caps; font-family: monospace; font-weight: normal; padding: 2px 1em; background-color: #FF5314; color: #fff; }
+		.items h4.mileage {font-size: .75em; color: #444; font-weight: normal; font-family: monospace; letter-spacing: 1px}
+		
+		.items .item .inside,
+		.items .item .load {font-weight: bold !important;}
+		
+		.items .item ul .alert span { font-family: monospace; font-size: .8em; font-weight: normal; padding: .2em; background-color: #FF5314; color: #fff; }
+		
+		.footer .settings {text-align: center;}
+		.footer .settings li:before {content:"\25cb"}
+		.footer .settings li {display: inline-block; margin-left: 1em; }
+		.footer .settings li:first-child {margin-left: 0; }
+		
+		.footer p.updates {margin: 1em;}
+		.footer .updates {margin-left: 1em; font-size: .8em; font-weight: normal; }
+		.footer .updates li {list-style: square outside; margin: 0 0 .5em 1em;}
+		
+		.footer .credit {text-align: center;}
+		
+		/* it's just a bit too big for the old iPhone 5S screens, so tweaking it just for them */
+		@media only screen and (max-device-width: 320px) {
+			.group { border: 1px solid #000 !important; }
+			.items .item { min-width: 300px !important; padding: 5px !important; }
+			.items .item img { max-width: 300px !important; }
+		}
+	</style>
+	<script src="jquery-3.4.1.slim.min.js"></script>
+	<script>
+		$(document).ready(function(){
+			$(".item").click(function(){
+				$("ul",this).toggle();
+			  }).css('cursor','pointer');
+		
+			if (new Date().getDay() > 4) {$(".weekend.mileage").css('color','#000');} else {$(".weekday.mileage").css('color','#000').css('font-weight','bold');}
+		});
+	</script>
+</head>
+<body>
+	<h1 class="title">U-HAUL Rental Cheat Sheet</h1>
+	<h2 class="tag">tap or click an item to toggle its details</h2>
+	<p class="disclaimer">This page is an unofficial quick reference to help UHAUL employees provide better service to customers! Prices are all In-Town, do not include taxes or fees, and information may be out of date or incorrect. See <a href="https://UHAUL.com">UHAUL.com</a> for official information.</p>
+	
+	<div class="group trailers withramps">
+		<h3>Utility Trailers with Ramps</h3>
+		<div class="items">	
+			<div class="item mt">
+				<h4 class="title"><span class="code">MT</span> 4' x 8'</h4>
+				<h4 class="subtitle">Motorcycle Trailer</h4>
+				<h4 class="price">$14.95 / day</h4>
+				<h4 class="alert"><span>In-Town Only</span></h4>
+				<ul>
+					<li class="inside">Inside: 7'8" x 3'9.5"</li>
+					<li class="ramp width">Ramp width: 3'9"</li>
+					<li class="empty">Empty weight: 800 lbs</li>
+					<li class="load">Max load: 1600 lbs</li>
+					<li class="gross">Max gross weight: 2,400 lbs</li>
+					<li class="area">Area: 29 sq. ft.</li>
+				</ul>
+				<img src="MT.jpg"/>
+			</div>
+			<div class="item rt">
+				<h4 class="title"><span class="code">RT</span> 5' x 9'</h4>
+				<h4 class="price">$24.95 / day</h4>
+				<ul>
+					<li class="inside">Inside: 9'2" x 4'9" (LxW)</li>
+					<li class="ramp width">Ramp width: 4'9"</li>
+					<li class="ramp capacity">Ramp Capacity: 1,810 lbs</li>
+					<li class="empty">Empty weight: 1,240 lbs</li>
+					<li class="load">Max load: 1,650 lbs</li>
+					<li class="gross">Max gross weight: 2,890 lbs</li>
+				</ul>
+				<img src="RT.jpg"/>
+			</div>
+			<div class="item ho">
+				<h4 class="title"><span class="code">HO</span> 6' x 12'</h4>
+				<h4 class="price">$34.95 / day</h4>
+				<h4 class="alert"><span>In-Town Only</span></h4>
+				<ul>
+					<li class="inside">Inside: 9'2" x 4'9" (LxW)</li>
+					<li class="ramp width">Ramp width: 4'9"</li>
+					<li class="ramp capacity">Ramp Capacity: 1,810 lbs</li>
+					<li class="empty">Empty weight: 2,290 lbs</li>
+					<li class="load">Max load: 2,110 lbs</li>
+					<li class="gross">Max gross weight: 4,400 lbs</li>
+				</ul>
+				<img src="HO.jpg"/>
+			</div>
+		</div>
+	</div>
+
+	<div class="group trailers withoutramps">
+		<h3>Utility Trailers without Ramps</h3>
+		<div class="items">
+			<div class="item fs">
+				<h4 class="title"><span class="code">FS</span> 4' x 7'</h4>
+				<h4 class="price">$14.95 / day</h4>
+				<h4 class="alert"><span>In-Town Only</span></h4>
+				<ul>
+					<li class="inside">Inside: 7'8" x 3'4" (LxW)</li>
+					<li class="empty">Empty weight: 630 lbs</li>
+					<li class="load">Max load: 1,770 lbs</li>
+					<li class="gross">Max gross weight: 2,400 lbs</li>
+				</ul>
+				<img src="FS.jpg"/>
+			</div>
+			<div class="item ao">
+				<h4 class="title"><span class="code">AO</span> 5' x 8' (4.5x9)</h4>
+				<h4 class="price">$18.95 / day</h4>
+				<h4 class="alert"><span>In-Town Only</span></h4>
+				<ul>
+					<li class="inside">Inside: 9' x 4'3.5" (LxW)</li>
+					<li class="empty">Empty weight: 1,000 lbs</li>
+					<li class="load">Max load: 1,890 lbs</li>
+					<li class="gross">Max gross weight: 2,890 lbs</li>
+				</ul>
+				<img src="AO.jpg"/>
+			</div>
+			<div class="item ro">
+				<h4 class="title"><span class="code">RO</span> 6' x 12'</h4>
+				<h4 class="price">$29.95 / day</h4>
+				<h4 class="alert"><span>In-Town Only</span></h4>
+				<ul>
+					<li class="inside">Inside: 12' x 6'2" (LxW)</li>
+					<li class="empty">Empty weight: 1,730 lbs</li>
+					<li class="load">Max load: 2,670 lbs</li>
+					<li class="gross">Max gross weight: 4,400 lbs</li>
+				</ul>
+				<img src="RO.jpg"/>
+			</div>
+		</div>
+	</div>
+	
+	<div class="group cargo trailers">
+		<h3>Cargo Trailers</h3>
+		<div class="items">
+			<div class="item uv">
+				<h4 class="title"><span class="code">UV</span> 4' x 8'</h4>
+				<h4 class="price">$14.95 / day</h4>
+				<ul>
+					<li class="inside">Inside: 8'1 x 4'1" x 4' (LxWxH)</li>
+					<li class="door">Door opening: 3'1" x 3'5" (WxH)</li>
+					<li class="volume">Volume: 142 cubic ft.</li>
+					<li class="empty">Empty weight: 850 lbs</li>
+					<li class="load">Max load: 1,650 lbs</li>
+					<li class="gross">Max gross weight: 2,500 lbs</li>
+				</ul>
+				<img src="UV.jpg"/>
+			</div>
+			<div class="item av">
+				<h4 class="title"><span class="code">AV</span> 5' x 8'</h4>
+				<h4 class="price">$18.95 / day</h4>
+				<ul>
+					<li class="inside">Inside: 8' x 4'8" x 5'4" (LxWxH)</li>
+					<li class="door">Door opening: 4' x 4'10" (WxH)</li>
+					<li class="volume">Volume: 208 cubic ft.</li>
+					<li class="empty">Empty weight: 900 lbs</li>
+					<li class="load">Max load: 1,800 lbs</li>
+					<li class="gross">Max gross weight: 2,700 lbs</li>
+					<li class="feature">holds a queen size bed</li>
+				</ul>
+				<img src="AV.jpg"/>
+			</div>
+			<div class="item mv">
+				<h4 class="title"><span class="code">MV</span> 5' x 10'</h4>
+				<h4 class="price">$29.95 / day</h4>
+				<ul>
+					<li class="inside">Inside: 9'10" x 4'9" x 4'7" (LxWxH)</li>
+					<li class="door">Door opening: 3'9" x 4' (WxH)</li>
+					<li class="volume">Volume: 230 cubic ft.</li>
+					<li class="empty">Empty weight: 1,250 lbs</li>
+					<li class="load">Max load: 1,550 lbs</li>
+					<li class="gross">Max gross weight: 2,800 lbs</li>
+				</ul>
+				<img src="MV.jpg"/>
+			</div>
+			<div class="item rv">
+				<h4 class="title"><span class="code">RV</span> 6' x 12'</h4>
+				<h4 class="price">$29.95 / day</h4>
+				<ul>
+					<li class="inside">Inside: 11'7" x 6' x 5'5" (LxWxH)</li>
+					<li class="door">Door opening: 5'0" x 4'10" (WxH)</li>
+					<li class="volume">Volume: 396 cubic ft.</li>
+					<li class="empty">Empty weight: 1,920 lbs</li>
+					<li class="load">Max load: 2,480 lbs</li>
+					<li class="gross">Max gross weight: 4,400 lbs</li>
+				</ul>
+				<img src="RV.jpg"/>
+			</div>
+		</div>
+	</div>
+	
+	<div class="group towing">
+		<h3>Car Towing</h3>
+		<div class="items">
+			<div class="item td">
+				<h4 class="title"><span class="code">TD</span> Tow Dolly</h4>
+				<h4 class="price">$44.95 / day</h4>
+				<ul>
+					<li class="empty">Empty weight: 750 lbs</li>
+					<li class="load">Max load: 3,450 lbs (front-wheel drive vehicle)</li>
+					<li class="load">Max load: 3,900 lbs (rear-wheel drive vehicle)</li>
+					<li class="gross">Must weigh at least 750 lbs. more than the vehicle being towed.</li>
+				</ul>
+				<img src="TD.jpg"/>
+			</div>
+			<div class="item at">
+				<h4 class="title"><span class="code">AT</span> Auto Transport</h4>
+				<h4 class="price">$54.95 / day</h4>
+				<ul>
+					<li class="empty">Empty weight: 2,210 lbs</li>
+					<li class="load">Max load: 5,290 lbs</li>
+					<li class="gross">Max gross weight: 7,500lbs</li>
+				</ul>
+				<img src="AT.jpg"/>
+			</div>
+		</div>
+	</div>
+	
+	<div class="group vehicles">
+		<h3>Vehicles</h3>
+		<div class="items">
+			<div class="item bp">
+				<h4 class="title"><span class="code">BP</span> 8' Pickup Truck</h4>
+				<h4 class="price">$19.95 / day + mileage</h4>
+				<h4 class="weekday mileage">59¢/mile (Sun-Thurs)</h4>
+				<h4 class="weekend mileage">69¢/mile (Fri-Sat)</h4>
+				<h4 class="alert"><span>In-Town Only</span></h4>
+				<h4 class="alert"><span>Card must be on file</span></h4>
+				<ul>
+					<li class="inside">Inside: 7'9" x 5'2" x 1'9" (LxWxH)</li>
+					<li class="mpg">19 mpg</li>
+					<li class="tank">Fuel Tank: 34 gallons</li>
+					<li class="deck">Deck height: 3'</li>
+					<li class="towing">Weight and Towing:
+						<ul>
+							<li class="empty">Empty weight: 4,696 lbs</li>
+							<li class="load">Max load: 1,980 lbs</li>
+							<li class="gross">Gross weight: 6,700 lbs max</li>
+							<li class="towing">Towing Capacity: 6,900 lbs</li>		
+						</ul>
+					</li>
+				</ul>
+				<img src="BP.jpg"/>
+			</div>
+			<div class="item be">
+				<h4 class="title"><span class="code">BE</span> 9' Cargo Van</h4>
+				<h4 class="price">$19.95 / day + mileage</h4>
+				<h4 class="weekday mileage">59¢/mile (Sun-Thurs)</h4>
+				<h4 class="weekend mileage">69¢/mile (Fri-Sat)</h4>
+				<h4 class="alert"><span>In-Town Only</span></h4>
+				<h4 class="alert"><span>Card must be on file</span></h4>
+				<ul>
+					<li class="inside">Inside: 9'6" x 5'7" x 4'7" (LxWxH)</li>
+					<li class="deck height">Deck height: 2'5"</li>
+					<li class="door">Back Door: 5'1-1/2" x 4'1-1/2" (WxH)</li>
+					<li class="volume">Volume: 245 cu.ft.</li>
+					<li class="mpg">18 mpg</li>
+					<li class="tank">Fuel Tank: 25 gallons</li>
+					<li class="towing">Weight and Towing:
+						<ul>
+							<li class="empty">Empty weight: 4,950 lbs</li>
+							<li class="load">Max load: 4,000 lbs</li>
+							<li class="gross">Gross weight: 9,000 lbs max</li>
+							<li class="towing alert"><span>Does not have a hitch to tow</span></li>	
+						</ul>
+					</li>
+					<li class="feature">Holds a queen sized mattress and box spring</li>
+				</ul>
+				<img src="BE.jpg"/>
+			</div>
+			<div class="item tm">
+				<h4 class="title"><span class="code">TM</span> 10' Box Truck</h4>
+				<h4 class="price">$19.95 / day + mileage</h4>
+				<h4 class="weekday mileage">79¢/mile (Sun-Thurs)</h4>
+				<h4 class="weekend mileage">99¢/mile (Fri-Sat)</h4>
+				<ul>
+					<li class="inside">Inside: 9'11" x 6'4" x 6'2" (LxWxH)</li>
+					<li class="deck length">Deck length: 9'11"</li>
+					<li class="deck height">Deck height: 2'5"</li>
+					<li class="door">Door Opening 5'11" x 5'7" (WxH)</li>
+					<li class="ramp alert"><span>No loading ramp</span></li>
+					<li class="volume">Volume: 402 cu.ft.</li>
+					<li class="mpg">12 mpg</li>
+					<li class="tank">Fuel Tank: 33 gallons</li>
+					<li class="towing">Weight and Towing:
+						<ul>
+							<li class="empty">Empty weight: 5,790 lbs</li>
+							<li class="load">Max load: 2,810 lbs</li>
+							<li class="gross">Gross weight: 8,600 lbs max</li>
+							<li class="towing">Towing Capacity: 6,000 lbs</li>		
+						</ul>
+					</li>
+					<li class="feature">Holds a king sized mattress and box spring</li>
+				</ul>
+				<img src="TM.jpg"/>
+			</div>
+			<div class="item dc">
+				<h4 class="title"><span class="code">DC</span> 15' Box Truck</h4>
+				<h4 class="price">$29.95 / day + mileage</h4>
+				<h4 class="weekday mileage">79¢/mile (Sun-Thurs)</h4>
+				<h4 class="weekend mileage">99¢/mile (Fri-Sat)</h4>
+				<ul>
+					<li class="inside">Inside: 15' x 7'8" x 7'2" (LxWxH)</li>
+					<li class="deck length">Deck length: 12'5"</li>
+					<li class="deck height">Deck height: 2'9"</li>
+					<li class="attic">Attic: 2'7" x 7'8" x 2'6" (LxWxH)</li>
+					<li class="door">Door Opening 7'3" x 6'5" (WxH)</li>
+					<li class="ramp">Loading Ramp Width: 2'2"</li>
+					<li class="volume">Volume: 764 cu.ft.</li>
+					<li class="mpg">10 mpg</li>
+					<li class="tank">Fuel Tank: 40 gallons</li>
+					<li class="towing">Weight and Towing:
+						<ul>
+							<li class="empty">Empty weight: 8,115 lbs</li>
+							<li class="load">Max load: 6,385 lbs</li>
+							<li class="gross">Gross weight: 14,500 lbs max</li>
+							<li class="towing">Towing Capacity: 10,000 lbs</li>		
+						</ul>
+					</li>
+				</ul>
+				<img src="DC.jpg"/>
+			</div>
+			<div class="item el">
+				<h4 class="title"><span class="code">EL</span> 17' Box Truck</h4>
+				<h4 class="price">$29.95 / day + mileage</h4>
+				<h4 class="weekday mileage">79¢/mile (Sun-Thurs)</h4>
+				<h4 class="weekend mileage">99¢/mile (Fri-Sat)</h4>
+				<ul>
+					<li class="inside">Inside: 16'9" x 7'8" x 7'2" (LxWxH)</li>
+					<li class="deck length">Deck length: 14'3"</li>
+					<li class="deck height">Deck height: 2'10"</li>
+					<li class="attic">Attic: 2'6" x 7'8" x 2'7" (LxWxH)</li>
+					<li class="door">Door Opening 7'3" x 6'5" (WxH)</li>
+					<li class="ramp">Loading Ramp Width: 2'2"</li>
+					<li class="volume">Volume: 865 cu.ft.</li>
+					<li class="mpg">10 mpg</li>
+					<li class="tank">Fuel Tank: 40 gallons</li>
+					<li class="towing">Weight and Towing:
+						<ul>
+							<li class="empty">Empty weight: 8,120 lbs</li>
+							<li class="load">Max load: 5,930 lbs</li>
+							<li class="gross">Gross weight: 14,500 lbs max</li>
+							<li class="towing">Towing Capacity: 10,000 lbs</li>		
+						</ul>
+					</li>
+				</ul>
+				<img src="EL.jpg"/>
+			</div>
+			<div class="item tt">
+				<h4 class="title"><span class="code">TT</span> 20' Box Truck</h4>
+				<h4 class="price">$39.95 / day + mileage</h4>
+				<h4 class="weekday mileage">79¢/mile (Sun-Thurs)</h4>
+				<h4 class="weekend mileage">99¢/mile (Fri-Sat)</h4>
+				<ul>
+					<li class="inside">Inside: 19'6" x 7'8" x 7'2" (LxWxH)</li>
+					<li class="deck length">Deck length: 16'8"</li>
+					<li class="deck height">Deck height: 2'11"</li>
+					<li class="attic">Attic: 2'10" x 7'8" x 2'8.2" (LxWxH)</li>
+					<li class="door">Door Opening 7'3" x 6'5" (WxH)</li>
+					<li class="ramp">Loading Ramp Width: 2'2" <i>(unconfirmed)</i></li>
+					<li class="volume">Volume: 1,016 cu.ft.</li>
+					<li class="mpg">10 mpg</li>
+					<li class="tank">Fuel Tank: 40 gallons</li>
+					<li class="towing">Weight and Towing:
+						<ul>
+							<li class="empty">Empty weight: 8,895 lbs</li>
+							<li class="load">Max load: 5,605 lbs</li>
+							<li class="gross">Gross weight: 14,500 lbs max</li>
+							<li class="towing">Towing Capacity: 7,500 lbs</li>		
+						</ul>
+					</li>
+				</ul>
+				<img src="TT.jpg"/>
+			</div>
+			<div class="item jh">
+				<h4 class="title"><span class="code">JH</span> 26' Box Truck</h4>
+				<h4 class="price">$39.95 / day + mileage</h4>
+				<h4 class="weekday mileage">79¢/mile (Sun-Thurs)</h4>
+				<h4 class="weekend mileage">99¢/mile (Fri-Sat)</h4>
+				<ul>
+					<li class="inside">Inside: 26'5" x 8'2" x 8'3" (LxWxH)</li>
+					<li class="deck length">Deck length: 23'5"</li>
+					<li class="deck height">Deck height: 2'11"</li>
+					<li class="attic">Attic: 2'8" x 8'2" x 3'1" (LxWxH)</li>
+					<li class="door">Door Opening 7'9" x 6'10" (WxH)</li>
+					<li class="ramp">Loading Ramp Width: 2'7'"</li>
+					<li class="volume">Volume: 1,682 cu.ft.</li>
+					<li class="mpg">10 mpg</li>
+					<li class="tank">Fuel Tank: 60 gallons</li>
+					<li class="towing">Weight and Towing:
+						<ul>
+							<li class="empty">Empty weight: 12,990 lbs</li>
+							<li class="load">Max load: 9,010 lbs</li>
+							<li class="gross">Gross weight: 25,999 lbs max</li>
+							<li class="towing">Towing Capacity: 7,500 lbs</li>		
+						</ul>
+					</li>
+				</ul>
+				<img src="JH.jpg"/>
+			</div>
+		</div>
+	</div>
+	
+	<div class="group storage">
+		<h3>uBox</h3>
+		<div class="items">
+			<div class="item aa">
+				<h4 class="title"><span class="code">AA</span> uBoxes</h4>
+				<h4 class="price">$39.95 / month + delivery</h4>
+				<h4 class="alert"><span>In-Town Only</span></h4>
+				<ul>
+					<li class="feature">includes 24 furniture pads per container</li>
+					<li class="feature">can hold king bed vertically</li>
+					<li class="feature">can hold california king diagonally</li>
+					<li class="inside">inside: 7'11" x 4'8" x 6'11" (LxWxH)</li>
+					<li>inside T and U models: 7'7" x 4'8" x 6'5" (LxWxH)</li>
+					<li class="volume">Volume: 257 cu. ft.</li>
+					<li class="load">Up to 2,000 lbs</li>
+					<li><span class="code">UB</span>/<span class="code">DB</span> Trailer: $5 per day</li>
+				</ul>
+				<img src="AA.jpg"/>
+			</div>
+		</div>
+	</div>
+	
+	<div class="footer">
+		<ul class="settings">
+			<li>
+				<a href="javascript:return nul;" onClick="$('.item ul').css('display','block')">show all details</a>
+			</li>
+			<li>
+				<a href="javascript:return nul;" onClick="$('.item ul').css('display','none')">hide all details</a>
+			</li>
+			
+			<!--
+        future updates:
+				add checkboxes for items to hide and store in cookie
+				pull prices and "in town only" from json, display in config table, and allow it to be set and stored in cookie
+			-->
+			
+		</ul>
+		<p class="updates">updates planned:</p>
+		<ul class="updates">
+			<li>Adding vertical clearance information for vehicles.</li>
+			<li>Tidying up list items.</li>
+			<li>Confirming measurements that have conflicting or missing information on official website.</li>
+			<li>Adding the ability to hide items.</li>
+			<li>Adding the ability to update "In-Town Only" alerts.</li>
+			<li>Adding the ability to update pricing.</li>
+		</ul>
+		<p class="credit">(c) 2019, a U-HAUL CSR. Images courtesy of <a href="https://uhaul.com">UHAUL.COM</a>.</p>
+	</div>
+	
+<!-- plans:
+	runHide
+		step through checked checkboxes and concatenate hidevalues // eg. hidevalues=".item.el,"+".item.mv"
+		$(hidevalues).css.display.none
+	check for cookie
+		if no cookie
+			runHide
+			set cookie 
+		if cookie
+			runHide
+		onCheck
+			runHide
+-->
+</body>
+</html>
