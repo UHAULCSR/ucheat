@@ -1,20 +1,20 @@
 <html lang="en">
 <head>
-  <meta http-equiv="content-type" content="text/html;charset=utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<meta name="apple-mobile-web-app-capable" content="yes" />
-	<meta name="viewport" content="initial-scale=1, user-scalable=no, maximum-scale=1" /> 
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta content="yes" />
+	<meta content="initial-scale=1, user-scalable=no, maximum-scale=1" /> 
 	<link rel="apple-touch-icon" sizes="150x150" href="u.png"/>
-	<link rel="icon" type="image/png" sizes="150x150" href="u.png"/>
-	<meta name="apple-mobile-web-app-title" content="U-Cheat">
-  <title>U-Cheat : UHAUL Rental Cheat Sheet</title>
+	<link rel="icon" type="image/png" sizes="150x150" href="/u.png"/>
+	<meta content="U-Cheat">
+    <title>U-Cheat : UHAUL Rental Cheat Sheet</title>
 	<style>
 		* {margin: 0; padding: 0; border: 0; line-height: 1; }
 		body { font-size: 20px; }
 		h1, h2, h3, h4, h5, h6 { font-size: 1.3em; text-align: center; }
 		a {text-decoration: none;}
-		
-		body > h1.title {font-family: sans-serif; font-size.9em; font-weight: normal; margin-top: 1em; }
+
+		body > h1.title {font-family: sans-serif; font-size: 2em; font-weight: normal; margin-top: 1em; }
 		body > h2.tag {margin: 0 10%; color: #ff5314; font-family: sans-serif; font-size: 1.2em; letter-spacing: 2px; font-weight: bold; font-variant: small-caps }
 		body > p.disclaimer {font-family: sans-serif; font-size: .5em; margin: 1em 5%; padding: 1px 1em; border: 1px solid red; text-align: center; }
 		
@@ -22,7 +22,7 @@
 		.group > h3 {color: #fff; background-color: #FF5314; padding: .5em 0 .3em 0;}
 		
 		.items {display: flex; flex-wrap: wrap; justify-content: center; align-items: stretch; }
-		.items .item { min-width: 300px; padding: 15px; flex: 1 1 1;}
+		.items .item { min-width: 300px; padding: 15px; flex: 1 1 auto;}
 		
 		@media only screen and (max-width: 600px) {
 			.items .item {border-top: 1px solid #000;}
@@ -46,12 +46,14 @@
 		.items .item .inside,
 		.items .item .load {font-weight: bold !important;}
 		
+		.items .item ul .itonly {display: none;}
+		.items .item ul .itonly span,
 		.items .item ul .alert span { font-family: monospace; font-size: .8em; font-weight: normal; padding: .2em; background-color: #FF5314; color: #fff; }
 		
-		.footer .settings {text-align: center;}
-		.footer .settings li:before {content:"\25cb"}
-		.footer .settings li {display: inline-block; margin-left: 1em; }
-		.footer .settings li:first-child {margin-left: 0; }
+		.footer ul.hideshow {text-align: center;}
+		.footer ul.hideshow li:before {content:"\25cb"}
+		.footer ul.hideshow li {display: inline-block; margin-left: 1em; }
+		.footer ul.hideshow li:first-child {margin-left: 0; }
 		
 		.footer p.updates {margin: 1em;}
 		.footer .updates {margin-left: 1em; font-size: .8em; font-weight: normal; }
@@ -61,20 +63,174 @@
 		
 		/* it's just a bit too big for the old iPhone 5S screens, so tweaking it just for them */
 		@media only screen and (max-device-width: 320px) {
+			
 			.group { border: 1px solid #000 !important; }
 			.items .item { min-width: 300px !important; padding: 5px !important; }
 			.items .item img { max-width: 300px !important; }
 		}
+
+		#itemsettings h3 {margin: 1em;}
+		#itemsettings p.instructions { background-color: #333; color: white; padding: 1em; font-size: 20px; margin: 1em; line-height: 1.5; }
+		
+		p.itemsettings.groups {width: 500px; margin: 0 auto;}
+		ul.itemsettings.groups {width: 500px; margin: 0 auto;}
+		ul.itemsettings.groups li {display: block; margin: .5em;}
+
+		#itemsettings .flexwrap {display: flex; flex-wrap: wrap; justify-content: center; align-items: stretch; }
+		table.itemsettings { flex: 1 1 auto; font-family: sans-serif; font-size: 20px; font-weight: normal; margin: 1em; border: 1px solid #333; }
+		table.itemsettings tr {border: 1px solid #333; margin-bottom: 0.5em; }
+		table.itemsettings td {padding: 10px;}
+		table.itemsettings td.code {display: table-cell;}
+		table.itemsettings td:first-child {text-align: right;}
+		table.itemsettings td[colspan="2"] {text-align: left;}
+		table.itemsettings input[type="text"] {border: 1px solid #333; padding: 5px; font-size: 20px; width: 70px;}
+		table.itemsettings input[type="text"]:active {border: 1px solid #f00;}
+		table.itemsettings input[type="checkbox"] {font-size: 1.3em;}
+		
+
 	</style>
 	<script src="jquery-3.4.1.slim.min.js"></script>
 	<script>
-		$(document).ready(function(){
-			$(".item").click(function(){
-				$("ul",this).toggle();
-			  }).css('cursor','pointer');
-		
-			if (new Date().getDay() > 4) {$(".weekend.mileage").css('color','#000');} else {$(".weekday.mileage").css('color','#000').css('font-weight','bold');}
-		});
+
+		var values = {
+			"mt_visible" : true,
+			"mt_intownonly" : true,
+			"mt_rate_day" : "14.95",
+
+			"rt_visible" : true,
+			"rt_intownonly" : false,
+			"rt_rate_day" : "24.95",
+
+			"ho_visible" : true,
+			"ho_intownonly" : true,
+			"ho_rate_day" : "34.95",
+
+			"fs_visible" : true,
+			"fs_intownonly" : true,
+			"fs_rate_day" : "14.95",
+
+			"ao_visible" : true,
+			"ao_intownonly" : true,
+			"ao_rate_day" : "18.95",
+
+			"ro_visible" : true,
+			"ro_intownonly" : true,
+			"ro_rate_day" : "29.95",
+
+			"uv_visible" : true,
+			"uv_intownonly" : false,
+			"uv_rate_day" : "14.95",
+
+			"av_visible" : true,
+			"av_intownonly" : false,
+			"av_rate_day" : "18.95",
+
+			"mv_visible" : true,
+			"mv_intownonly" : false,
+			"mv_rate_day" : "29.95",
+
+			"rv_visible" : true,
+			"rv_intownonly" : false,
+			"rv_rate_day" : "29.95",
+
+			"td_visible" : true,
+			"td_intownonly" : false,
+			"td_rate_day" : "44.95",
+
+			"at_visible" : true,
+			"at_intownonly" : false,
+			"at_rate_day" : "54.95",
+
+			"bp_visible" : true,
+			"bp_intownonly" : true,
+			"bp_rate_day" : "19.95",
+			"bp_rate_week" : "0.59",
+			"bp_rate_weekend" : "0.69",
+
+			"be_visible" : true,
+			"be_intownonly" : true,
+			"be_rate_day" : "19.95",
+			"be_rate_week" : "0.59",
+			"be_rate_weekend" : "0.69",
+
+			"tm_visible" : true,
+			"tm_intownonly" : false,
+			"tm_rate_day" : "19.95",
+			"tm_rate_week" : "0.79",
+			"tm_rate_weekend" : "0.99",
+
+			"dc_visible" : true,
+			"dc_intownonly" : false,
+			"dc_rate_day" : "29.95",
+			"dc_rate_week" : "0.79",
+			"dc_rate_weekend" : "0.99",
+
+			"el_visible" : true,
+			"el_intownonly" : false,
+			"el_rate_day" : "29.95",
+			"el_rate_week" : "0.79",
+			"el_rate_weekend" : "0.99",
+
+			"tt_visible" : true,
+			"tt_intownonly" : false,
+			"tt_rate_day" : "39.95",
+			"tt_rate_week" : "0.79",
+			"tt_rate_weekend" : "0.99",
+
+			"jh_visible" : true, 
+			"jh_intownonly" : false,
+			"jh_rate_day" : "39.95",
+			"jh_rate_week" : "0.79",
+			"jh_rate_weekend" : "0.99",
+
+			"aa_visible" : true,
+			"aa_intownonly" : true,
+			"aa_rate_month" : "39.95"
+		}
+		var defaultValues = values;
+
+		function updateItem(item,visible,itonly,day,weekday,weekend) {  
+		 	if (visible == true || visible == 1) { $('div.item.'+item).show() } else { $('div.item.'+item).hide() } 
+		 	if (itonly == true || itonly == 1) {$('div.item.'+item+' .itonly').html('<h4 class="alert"><span>It-Town Only</span></h4>').show(); } else { $('div.item.'+item+' .itonly').hide() }
+		 	$('div.item.'+item+' .price').text('$'+day+' / day');
+		 	if (weekday >= 10) weekday = weekday / 100 // just in case the user has entered cents, convert to dollars
+		 	if (weekend >= 10) weekend = weekend / 100	// this approach assumes no mileage is greater than $10/mile or less than 10 cents/mile
+		 	if (weekday > 0 ) $('div.item.'+item+' .weekday').text('$'+weekday+'/mile (Sun-Thurs)');
+		 	if (weekend > 0 ) $('div.item.'+item+' .weekend').text('$'+weekend+'/mile (Fri-Sat)');
+		 		// default to displaying $x.xx format, but overwrite if we can figure out a nicer way. This SHOULD be converted to an if/else, but this is good enough for now.
+			if (weekday > 0 && weekday < 1) $('div.item.'+item+' .weekday').text((weekday + "").split(".")[1] + '¢/mile (Sun-Thurs)');
+		 	if (weekend > 0 && weekday < 1) $('div.item.'+item+' .weekend').text((weekend + "").split(".")[1] + '¢/mile (Fri-Sat)');
+		 		// this method converts weekday/weekend to strings, splits them at the decimal, and prints the second part of the array (what's right of the decimal. ideally, we'd check for bad input, but this will do.
+		 }
+
+		 function updateUbox(item, visible,itonly,month) {  
+		 	if (visible == true || visible == 1) { $('div.item.'+item).show() } else { $('div.item.'+item).hide() } 
+		 	if (itonly == true || itonly == 1) {$('div.item.'+item+' .itonly').html('<h4 class="alert"><span>It-Town Only</span></h4>').show(); } else { $('div.item.'+item+' .itonly').hide() }
+		 	$('div.item.'+item+' .price').text('$'+month+' / month + delivery');
+		 }
+
+		 function updateAll() {
+		 	updateItem('mt',values.mt_visible,values.mt_intownonly,values.mt_rate_day,0,0);
+		 	updateItem('rt',values.rt_visible,values.rt_intownonly,values.rt_rate_day,0,0);
+		 	updateItem('ho',values.ho_visible,values.ho_intownonly,values.ho_rate_day,0,0);
+		 	updateItem('fs',values.fs_visible,values.fs_intownonly,values.fs_rate_day,0,0);
+		 	updateItem('ao',values.ao_visible,values.ro_intownonly,values.ao_rate_day,0,0);
+		 	updateItem('ro',values.ro_visible,values.ro_intownonly,values.ro_rate_day,0,0);
+		 	updateItem('uv',values.uv_visible,values.uv_intownonly,values.uv_rate_day,0,0);
+		 	updateItem('av',values.av_visible,values.av_intownonly,values.av_rate_day,0,0);
+		 	updateItem('mv',values.mv_visible,values.mv_intownonly,values.mv_rate_day,0,0);
+		 	updateItem('rv',values.rv_visible,values.rv_intownonly,values.rv_rate_day,0,0);
+		 	updateItem('td',values.td_visible,values.td_intownonly,values.td_rate_day,0,0);
+		 	updateItem('at',values.at_visible,values.at_intownonly,values.at_rate_day,0,0);
+		 	updateItem('bp',values.bp_visible,values.bp_intownonly,values.bp_rate_day,values.bp_rate_week,values.bp_rate_weekend);
+		 	updateItem('be',values.be_visible,values.be_intownonly,values.be_rate_day,values.be_rate_week,values.be_rate_weekend);
+		 	updateItem('tm',values.tm_visible,values.tm_intownonly,values.tm_rate_day,values.tm_rate_week,values.tm_rate_weekend);
+		 	updateItem('dc',values.dc_visible,values.dc_intownonly,values.dc_rate_day,values.dc_rate_week,values.dc_rate_weekend);
+		 	updateItem('el',values.el_visible,values.el_intownonly,values.el_rate_day,values.el_rate_week,values.el_rate_weekend);
+		 	updateItem('tt',values.tt_visible,values.tt_intownonly,values.tt_rate_day,values.tt_rate_week,values.tt_rate_weekend);
+		 	updateItem('jh',values.jh_visible,values.jh_intownonly,values.jh_rate_day,values.jh_rate_week,values.jh_rate_weekend);
+		 	updateUbox('aa',values.aa_visible,values.aa_intownonly,values.aa_rate_month);
+		 }
 	</script>
 </head>
 <body>
@@ -88,8 +244,8 @@
 			<div class="item mt">
 				<h4 class="title"><span class="code">MT</span> 4' x 8'</h4>
 				<h4 class="subtitle">Motorcycle Trailer</h4>
-				<h4 class="price">$14.95 / day</h4>
-				<h4 class="alert"><span>In-Town Only</span></h4>
+				<h4 class="price"></h4>
+				<h4 class="itonly"></h4>
 				<ul>
 					<li class="inside">Inside: 7'8" x 3'9.5"</li>
 					<li class="ramp width">Ramp width: 3'9"</li>
@@ -102,7 +258,8 @@
 			</div>
 			<div class="item rt">
 				<h4 class="title"><span class="code">RT</span> 5' x 9'</h4>
-				<h4 class="price">$24.95 / day</h4>
+				<h4 class="price"></h4>
+				<h4 class="itonly"></h4>
 				<ul>
 					<li class="inside">Inside: 9'2" x 4'9" (LxW)</li>
 					<li class="ramp width">Ramp width: 4'9"</li>
@@ -115,8 +272,8 @@
 			</div>
 			<div class="item ho">
 				<h4 class="title"><span class="code">HO</span> 6' x 12'</h4>
-				<h4 class="price">$34.95 / day</h4>
-				<h4 class="alert"><span>In-Town Only</span></h4>
+				<h4 class="price"></h4>
+				<h4 class="itonly"></h4>
 				<ul>
 					<li class="inside">Inside: 9'2" x 4'9" (LxW)</li>
 					<li class="ramp width">Ramp width: 4'9"</li>
@@ -135,8 +292,8 @@
 		<div class="items">
 			<div class="item fs">
 				<h4 class="title"><span class="code">FS</span> 4' x 7'</h4>
-				<h4 class="price">$14.95 / day</h4>
-				<h4 class="alert"><span>In-Town Only</span></h4>
+				<h4 class="price"></h4>
+				<h4 class="itonly"></h4>
 				<ul>
 					<li class="inside">Inside: 7'8" x 3'4" (LxW)</li>
 					<li class="empty">Empty weight: 630 lbs</li>
@@ -147,8 +304,8 @@
 			</div>
 			<div class="item ao">
 				<h4 class="title"><span class="code">AO</span> 5' x 8' (4.5x9)</h4>
-				<h4 class="price">$18.95 / day</h4>
-				<h4 class="alert"><span>In-Town Only</span></h4>
+				<h4 class="price"></h4>
+				<h4 class="itonly"></h4>
 				<ul>
 					<li class="inside">Inside: 9' x 4'3.5" (LxW)</li>
 					<li class="empty">Empty weight: 1,000 lbs</li>
@@ -159,8 +316,8 @@
 			</div>
 			<div class="item ro">
 				<h4 class="title"><span class="code">RO</span> 6' x 12'</h4>
-				<h4 class="price">$29.95 / day</h4>
-				<h4 class="alert"><span>In-Town Only</span></h4>
+				<h4 class="price"></h4>
+				<h4 class="itonly"></h4>
 				<ul>
 					<li class="inside">Inside: 12' x 6'2" (LxW)</li>
 					<li class="empty">Empty weight: 1,730 lbs</li>
@@ -177,7 +334,8 @@
 		<div class="items">
 			<div class="item uv">
 				<h4 class="title"><span class="code">UV</span> 4' x 8'</h4>
-				<h4 class="price">$14.95 / day</h4>
+				<h4 class="price"></h4>
+				<h4 class="itonly"></h4>
 				<ul>
 					<li class="inside">Inside: 8'1 x 4'1" x 4' (LxWxH)</li>
 					<li class="door">Door opening: 3'1" x 3'5" (WxH)</li>
@@ -190,7 +348,8 @@
 			</div>
 			<div class="item av">
 				<h4 class="title"><span class="code">AV</span> 5' x 8'</h4>
-				<h4 class="price">$18.95 / day</h4>
+				<h4 class="price"></h4>
+				<h4 class="itonly"></h4>
 				<ul>
 					<li class="inside">Inside: 8' x 4'8" x 5'4" (LxWxH)</li>
 					<li class="door">Door opening: 4' x 4'10" (WxH)</li>
@@ -204,7 +363,8 @@
 			</div>
 			<div class="item mv">
 				<h4 class="title"><span class="code">MV</span> 5' x 10'</h4>
-				<h4 class="price">$29.95 / day</h4>
+				<h4 class="price"></h4>
+				<h4 class="itonly"></h4>
 				<ul>
 					<li class="inside">Inside: 9'10" x 4'9" x 4'7" (LxWxH)</li>
 					<li class="door">Door opening: 3'9" x 4' (WxH)</li>
@@ -217,7 +377,8 @@
 			</div>
 			<div class="item rv">
 				<h4 class="title"><span class="code">RV</span> 6' x 12'</h4>
-				<h4 class="price">$29.95 / day</h4>
+				<h4 class="price"></h4>
+				<h4 class="itonly"></h4>
 				<ul>
 					<li class="inside">Inside: 11'7" x 6' x 5'5" (LxWxH)</li>
 					<li class="door">Door opening: 5'0" x 4'10" (WxH)</li>
@@ -236,7 +397,8 @@
 		<div class="items">
 			<div class="item td">
 				<h4 class="title"><span class="code">TD</span> Tow Dolly</h4>
-				<h4 class="price">$44.95 / day</h4>
+				<h4 class="price"></h4>
+				<h4 class="itonly"></h4>
 				<ul>
 					<li class="empty">Empty weight: 750 lbs</li>
 					<li class="load">Max load: 3,450 lbs (front-wheel drive vehicle)</li>
@@ -247,7 +409,8 @@
 			</div>
 			<div class="item at">
 				<h4 class="title"><span class="code">AT</span> Auto Transport</h4>
-				<h4 class="price">$54.95 / day</h4>
+				<h4 class="price"></h4>
+				<h4 class="itonly"></h4>
 				<ul>
 					<li class="empty">Empty weight: 2,210 lbs</li>
 					<li class="load">Max load: 5,290 lbs</li>
@@ -263,10 +426,10 @@
 		<div class="items">
 			<div class="item bp">
 				<h4 class="title"><span class="code">BP</span> 8' Pickup Truck</h4>
-				<h4 class="price">$19.95 / day + mileage</h4>
-				<h4 class="weekday mileage">59¢/mile (Sun-Thurs)</h4>
-				<h4 class="weekend mileage">69¢/mile (Fri-Sat)</h4>
-				<h4 class="alert"><span>In-Town Only</span></h4>
+				<h4 class="price"></h4>
+				<h4 class="weekday mileage"></h4>
+				<h4 class="weekend mileage"></h4>
+				<h4 class="itonly"></h4>
 				<h4 class="alert"><span>Card must be on file</span></h4>
 				<ul>
 					<li class="inside">Inside: 7'9" x 5'2" x 1'9" (LxWxH)</li>
@@ -286,10 +449,10 @@
 			</div>
 			<div class="item be">
 				<h4 class="title"><span class="code">BE</span> 9' Cargo Van</h4>
-				<h4 class="price">$19.95 / day + mileage</h4>
-				<h4 class="weekday mileage">59¢/mile (Sun-Thurs)</h4>
-				<h4 class="weekend mileage">69¢/mile (Fri-Sat)</h4>
-				<h4 class="alert"><span>In-Town Only</span></h4>
+				<h4 class="price"></h4>
+				<h4 class="weekday mileage"></h4>
+				<h4 class="weekend mileage"></h4>
+				<h4 class="itonly"></h4>
 				<h4 class="alert"><span>Card must be on file</span></h4>
 				<ul>
 					<li class="inside">Inside: 9'6" x 5'7" x 4'7" (LxWxH)</li>
@@ -312,9 +475,10 @@
 			</div>
 			<div class="item tm">
 				<h4 class="title"><span class="code">TM</span> 10' Box Truck</h4>
-				<h4 class="price">$19.95 / day + mileage</h4>
-				<h4 class="weekday mileage">79¢/mile (Sun-Thurs)</h4>
-				<h4 class="weekend mileage">99¢/mile (Fri-Sat)</h4>
+				<h4 class="price"></h4>
+				<h4 class="weekday mileage"></h4>
+				<h4 class="weekend mileage"></h4>
+				<h4 class="itonly"></h4>
 				<ul>
 					<li class="inside">Inside: 9'11" x 6'4" x 6'2" (LxWxH)</li>
 					<li class="deck length">Deck length: 9'11"</li>
@@ -338,9 +502,10 @@
 			</div>
 			<div class="item dc">
 				<h4 class="title"><span class="code">DC</span> 15' Box Truck</h4>
-				<h4 class="price">$29.95 / day + mileage</h4>
-				<h4 class="weekday mileage">79¢/mile (Sun-Thurs)</h4>
-				<h4 class="weekend mileage">99¢/mile (Fri-Sat)</h4>
+				<h4 class="price"></h4>
+				<h4 class="weekday mileage"></h4>
+				<h4 class="weekend mileage"></h4>
+				<h4 class="itonly"></h4>
 				<ul>
 					<li class="inside">Inside: 15' x 7'8" x 7'2" (LxWxH)</li>
 					<li class="deck length">Deck length: 12'5"</li>
@@ -364,9 +529,10 @@
 			</div>
 			<div class="item el">
 				<h4 class="title"><span class="code">EL</span> 17' Box Truck</h4>
-				<h4 class="price">$29.95 / day + mileage</h4>
-				<h4 class="weekday mileage">79¢/mile (Sun-Thurs)</h4>
-				<h4 class="weekend mileage">99¢/mile (Fri-Sat)</h4>
+				<h4 class="price"></h4>
+				<h4 class="weekday mileage"></h4>
+				<h4 class="weekend mileage"></h4>
+				<h4 class="itonly"></h4>
 				<ul>
 					<li class="inside">Inside: 16'9" x 7'8" x 7'2" (LxWxH)</li>
 					<li class="deck length">Deck length: 14'3"</li>
@@ -390,9 +556,10 @@
 			</div>
 			<div class="item tt">
 				<h4 class="title"><span class="code">TT</span> 20' Box Truck</h4>
-				<h4 class="price">$39.95 / day + mileage</h4>
-				<h4 class="weekday mileage">79¢/mile (Sun-Thurs)</h4>
-				<h4 class="weekend mileage">99¢/mile (Fri-Sat)</h4>
+				<h4 class="price"></h4>
+				<h4 class="weekday mileage"></h4>
+				<h4 class="weekend mileage"></h4>
+				<h4 class="itonly"></h4>
 				<ul>
 					<li class="inside">Inside: 19'6" x 7'8" x 7'2" (LxWxH)</li>
 					<li class="deck length">Deck length: 16'8"</li>
@@ -416,9 +583,10 @@
 			</div>
 			<div class="item jh">
 				<h4 class="title"><span class="code">JH</span> 26' Box Truck</h4>
-				<h4 class="price">$39.95 / day + mileage</h4>
-				<h4 class="weekday mileage">79¢/mile (Sun-Thurs)</h4>
-				<h4 class="weekend mileage">99¢/mile (Fri-Sat)</h4>
+				<h4 class="price"></h4>
+				<h4 class="weekday mileage"></h4>
+				<h4 class="weekend mileage"></h4>
+				<h4 class="itonly"></h4>
 				<ul>
 					<li class="inside">Inside: 26'5" x 8'2" x 8'3" (LxWxH)</li>
 					<li class="deck length">Deck length: 23'5"</li>
@@ -448,8 +616,8 @@
 		<div class="items">
 			<div class="item aa">
 				<h4 class="title"><span class="code">AA</span> uBoxes</h4>
-				<h4 class="price">$39.95 / month + delivery</h4>
-				<h4 class="alert"><span>In-Town Only</span></h4>
+				<h4 class="price"></h4>
+				<h4 class="itonly"></h4>
 				<ul>
 					<li class="feature">includes 24 furniture pads per container</li>
 					<li class="feature">can hold king bed vertically</li>
@@ -466,45 +634,244 @@
 	</div>
 	
 	<div class="footer">
-		<ul class="settings">
-			<li>
-				<a href="javascript:return nul;" onClick="$('.item ul').css('display','block')">show all details</a>
-			</li>
-			<li>
-				<a href="javascript:return nul;" onClick="$('.item ul').css('display','none')">hide all details</a>
-			</li>
-			
-			<!--
-        future updates:
-				add checkboxes for items to hide and store in cookie
-				pull prices and "in town only" from json, display in config table, and allow it to be set and stored in cookie
-			-->
-			
+		<ul class="hideshow">
+			<li><a href="javascript: void(0)" onClick="$('.item ul').css('display','block')">show all details</a></li>
+			<li><a href="javascript: void(0)" onClick="$('.item ul').css('display','none')">hide all details</a></li>
+			<li><a href="javascript: void(0)" onClick="$('#itemsettings').toggle('slow')">show/hide item settings</a></li>
+			<li><a href="javascript: void(0)" onClick="values=defaultValues;updateAll()">reset items settings</a></li>
 		</ul>
+
+		<!-- hide/show settings by group. on value change, set "customvalues" cookie and refresh items using specific item function -->
+				
+		<div id="itemsettings">
+			<h3>Item Settings</h3>
+
+			<p class="instructions">
+				Settings are updated automatically as you type or check/uncheck boxes.
+				<strong>Important: Changes to rates and settings are saved on this device only.</strong>
+				<small>(A future update is planned to allow for exporting/importing saved settings to other devices.)</small>
+			</p>
+
+			<p class="itemsettings groups"><strong>Check/uncheck groups to show/hide their settings:</strong></p>
+			<ul class="itemsettings groups">
+				<li><input type="checkbox" id="settings_group_trailers_withramps" data-group=".itemsettings.trailers.withramps" checked> <label for="settings_group_trailers_withramps">Trailers with Ramps</label></li>
+				<li><input type="checkbox" id="settings_group_trailers_withoutramps" data-group=".itemsettings.trailers.withoutramps" checked> <label for="settings_group_trailers_withoutramps">Trailers without Ramps</label></li>
+				<li><input type="checkbox" id="settings_group_cargo_railers" data-group=".itemsettings.cargo.trailers" checked> <label for="settings_group_cargo_railers">Cargo Trailers</label></li>
+				<li><input type="checkbox" id="settings_group_towing" data-group=".itemsettings.towing" checked> <label for="settings_group_towing">Towing</label></li>
+				<li><input type="checkbox" id="settings_group_vehicles" data-group=".itemsettings.vehicles" checked> <label for="settings_group_vehicles">Vehicles</label></li>
+			</ul>
+
+			<div class="itemsettings">
+				<div class="itemsettings trailers withramps">
+					<h4>Trailers with Ramps</h4>
+					<div class="flexwrap">
+						<table class="itemsettings mt">
+							<tr>
+								<td rowspan="5" class="code"><span>MT</span></td>
+								<td colspan="2"><input type="checkbox" id="mt_visible" value="mt_shown" checked> <label for="bp_visible">visible</label></td></tr>
+								<tr><td colspan="2"><input type="checkbox" id="mt_intownonly" value="mt_intownonly" checked> <label for="mt_intownonly">in town only</label></td></tr>
+								<tr><td>Daily:</td><td><input type="text" id="rate_mt_day" value="14.95" /></td></tr>
+						</table>
+						<table class="itemsettings rt">
+							<tr>
+								<td rowspan="5" class="code"><span>RT</span></td>
+								<td colspan="2"><input type="checkbox" id="rt_visible" value="rt_shown" checked> <label for="bp_visible">visible</label></td></tr>
+								<tr><td colspan="2"><input type="checkbox" id="rt_intownonly" value="rt_intownonly"> <label for="rt_intownonly">in town only</label></td></tr>
+								<tr><td>Daily:</td><td><input type="text" id="rate_rt_day" value="24.95" /></td></tr>
+						</table>
+						<table class="itemsettings ho">
+							<tr>
+								<td rowspan="5" class="code"><span>HO</span></td>
+								<td colspan="2"><input type="checkbox" id="ho_visible" value="ho_shown" checked> <label for="bp_visible">visible</label></td></tr>
+								<tr><td colspan="2"><input type="checkbox" id="ho_intownonly" value="ho_intownonly" checked> <label for="ho_intownonly">in town only</label></td></tr>
+								<tr><td>Daily:</td><td><input type="text" id="rate_ho_day" value="34.95" /></td></tr>
+						</table>
+					</div>
+				</div>
+				<div class="itemsettings trailers withoutramps">
+					<h4>Trailers without Ramps</h4>
+					<div class="flexwrap">
+						<table class="itemsettings fs">
+							<tr>
+								<td rowspan="5" class="code"><span>FS</span></td>
+								<td colspan="2"><input type="checkbox" id="fs_visible" value="fs_shown" checked> <label for="bp_visible">visible</label></td></tr>
+								<tr><td colspan="2"><input type="checkbox" id="fs_intownonly" value="fs_intownonly" checked> <label for="fs_intownonly">in town only</label></td></tr>
+								<tr><td>Daily:</td><td><input type="text" id="rate_fs_day" value="14.95" /></td></tr>
+						</table>
+						<table class="itemsettings ao">
+							<tr>
+								<td rowspan="5" class="code"><span>AO</span></td>
+								<td colspan="2"><input type="checkbox" id="ao_visible" value="ao_shown" checked> <label for="bp_visible">visible</label></td></tr>
+								<tr><td colspan="2"><input type="checkbox" id="ao_intownonly" value="ao_intownonly" checked> <label for="ao_intownonly">in town only</label></td></tr>
+								<tr><td>Daily:</td><td><input type="text" id="rate_ao_day" value="18.95" /></td></tr>
+						</table>
+						<table class="itemsettings ro">
+							<tr>
+								<td rowspan="5" class="code"><span>RO</span></td>
+								<td colspan="2"><input type="checkbox" id="ro_visible" value="ro_shown" checked> <label for="bp_visible">visible</label></td></tr>
+								<tr><td colspan="2"><input type="checkbox" id="ro_intownonly" value="ro_intownonly" checked> <label for="ro_intownonly">in town only</label></td></tr>
+								<tr><td>Daily:</td><td><input type="text" id="rate_ro_day" value="29.95" /></td></tr>
+						</table>
+					</div>
+				</div>
+				<div class="itemsettings cargo trailers">
+					<h4>Cargo Trailers</h4>
+					<div class="flexwrap">
+						<table class="itemsettings uv">
+							<tr>
+								<td rowspan="5" class="code"><span>UV</span></td>
+								<td colspan="2"><input type="checkbox" id="uv_visible" value="uv_shown" checked> <label for="bp_visible">visible</label></td></tr>
+								<tr><td colspan="2"><input type="checkbox" id="uv_intownonly" value="uv_intownonly"> <label for="uv_intownonly">in town only</label></td></tr>
+								<tr><td>Daily:</td><td><input type="text" id="rate_uv_day" value="14.95" /></td></tr>
+						</table>
+						<table class="itemsettings av">
+							<tr>
+								<td rowspan="5" class="code"><span>AV</span></td>
+								<td colspan="2"><input type="checkbox" id="av_visible" value="av_shown" checked> <label for="bp_visible">visible</label></td></tr>
+								<tr><td colspan="2"><input type="checkbox" id="av_intownonly" value="av_intownonly"> <label for="av_intownonly">in town only</label></td></tr>
+								<tr><td>Daily:</td><td><input type="text" id="rate_av_day" value="18.95" /></td></tr>
+						</table>
+						<table class="itemsettings mv">
+							<tr>
+								<td rowspan="5" class="code"><span>MV</span></td>
+								<td colspan="2"><input type="checkbox" id="mv_visible" value="mv_shown" checked> <label for="bp_visible">visible</label></td></tr>
+								<tr><td colspan="2"><input type="checkbox" id="mv_intownonly" value="mv_intownonly"> <label for="mv_intownonly">in town only</label></td></tr>
+								<tr><td>Daily:</td><td><input type="text" id="rate_mv_day" value="29.95" /></td></tr>
+						</table>
+						<table class="itemsettings rv">
+							<tr>
+								<td rowspan="5" class="code"><span>RV</span></td>
+								<td colspan="2"><input type="checkbox" id="rv_visible" value="rv_shown" checked> <label for="bp_visible">visible</label></td></tr>
+								<tr><td colspan="2"><input type="checkbox" id="rv_intownonly" value="rv_intownonly"> <label for="rv_intownonly">in town only</label></td></tr>
+								<tr><td>Daily:</td><td><input type="text" id="rate_rv_day" value="29.95" /></td></tr>
+						</table>
+					</div>
+				</div>
+				<div class="itemsettings towing">
+					<h4>Towing</h4>
+					<div class="flexwrap">
+						<table class="itemsettings td">
+							<tr>
+								<td rowspan="5" class="code"><span>TD</span></td>
+								<td colspan="2"><input type="checkbox" id="td_visible" value="td_shown" checked> <label for="bp_visible">visible</label></td></tr>
+								<tr><td colspan="2"><input type="checkbox" id="td_intownonly" value="td_intownonly"> <label for="td_intownonly">in town only</label></td></tr>
+								<tr><td>Daily:</td><td><input type="text" id="rate_td_day" value="44.95" /></td></tr>
+						</table>
+						<table class="itemsettings at">
+							<tr>
+								<td rowspan="5" class="code"><span>AT</span></td>
+								<td colspan="2"><input type="checkbox" id="at_visible" value="at_shown" checked> <label for="bp_visible">visible</label></td></tr>
+								<tr><td colspan="2"><input type="checkbox" id="at_intownonly" value="at_intownonly"> <label for="at_intownonly">in town only</label></td></tr>
+								<tr><td>Daily:</td><td><input type="text" id="rate_at_day" value="54.95" /></td></tr>
+						</table>
+					</div>
+				</div>
+				<div class="itemsettings vehicles">
+					<h4>Vehicles</h4>
+					<div class="flexwrap">
+						<table class="itemsettings bp">
+							<tr>
+								<td rowspan="5" class="code"><span>BP</span></td>
+								<td colspan="2"><input type="checkbox" id="bp_visible" value="bp_shown" checked> <label for="bp_visible">visible</label></td></tr>
+								<tr><td colspan="2"><input type="checkbox" id="bp_intownonly" value="bp_intownonly" checked> <label for="bp_intownonly">in town only</label></td></tr>
+								<tr><td>Daily:</td><td><input type="text" id="rate_bp_day" value="19.95" /></td></tr>
+								<tr><td>Sun-Thur Mileage</td><td><input type="text" id="rate_bp_week" value="0.59" /></td></tr>
+								<tr><td>Fri-Sat Mileage</td><td><input type="text" id="rate_bp_weekend" value="0.69" /></td></tr>
+						</table>
+						<table class="itemsettings be">
+							<tr>
+								<td rowspan="5" class="code"><span>BE</span></td>
+								<td colspan="2"><input type="checkbox" id="be_visible" value="be_shown" checked> <label for="be_visible">visible</label></td></tr>
+								<tr><td colspan="2"><input type="checkbox" id="be_intownonly" value="be_intownonly" checked> <label for="be_intownonly">in town only</label></td></tr>
+								<tr><td>Daily:</td><td><input type="text" id="rate_be_day" value="19.95" /></td></tr>
+								<tr><td>Sun-Thur Mileage</td><td><input type="text" id="rate_be_week" value="0.59" /></td></tr>
+								<tr><td>Fri-Sat Mileage</td><td><input type="text" id="rate_be_weekend" value="0.69" /></td></tr>
+						</table>
+						<table class="itemsettings tm">
+							<tr>
+								<td rowspan="5" class="code"><span>TM</span></td>
+								<td colspan="2"><input type="checkbox" id="tm_visible" value="tm_shown" checked> <label for="tm_visible">visible</label></td></tr>
+								<tr><td colspan="2"><input type="checkbox" id="tm_intownonly" value="tm_intownonly" > <label for="tm_intownonly">in town only</label></td></tr>
+								<tr><td>Daily:</td><td><input type="text" id="rate_tm_day" value="19.95" /></td></tr>
+								<tr><td>Sun-Thur Mileage</td><td><input type="text" id="rate_tm_week" value="0.79" /></td></tr>
+								<tr><td>Fri-Sat Mileage</td><td><input type="text" id="rate_tm_weekend" value="0.99" /></td></tr>
+						</table>
+						<table class="itemsettings dc">
+							<tr>
+								<td rowspan="5" class="code"><span>DC</span></td>
+								<td colspan="2"><input type="checkbox" id="dc_visible" value="dc_shown" checked> <label for="dc_visible">visible</label></td></tr>
+								<tr><td colspan="2"><input type="checkbox" id="dc_intownonly" value="dc_intownonly" > <label for="dc_intownonly">in town only</label></td></tr>
+								<tr><td>Daily:</td><td><input type="text" id="rate_dc_day" value="29.95" /></td></tr>
+								<tr><td>Sun-Thur Mileage</td><td><input type="text" id="rate_dc_week" value="0.79" /></td></tr>
+								<tr><td>Fri-Sat Mileage</td><td><input type="text" id="rate_dc_weekend" value="0.99" /></td></tr>
+						</table>
+						<table class="itemsettings el">
+							<tr>
+								<td rowspan="5" class="code"><span>EL</span></td>
+								<td colspan="2"><input type="checkbox" id="el_visible" value="el_shown" checked> <label for="el_visible">visible</label></td></tr>
+								<tr><td colspan="2"><input type="checkbox" id="el_intownonly" value="el_intownonly" > <label for="el_intownonly">in town only</label></td></tr>
+								<tr><td>Daily:</td><td><input type="text" id="rate_el_day" value="29.95" /></td></tr>
+								<tr><td>Sun-Thur Mileage</td><td><input type="text" id="rate_el_week" value="0.79" /></td></tr>
+								<tr><td>Fri-Sat Mileage</td><td><input type="text" id="rate_el_weekend" value="0.99" /></td></tr>
+						</table>
+						<table class="itemsettings tt">
+							<tr>
+								<td rowspan="5" class="code"><span>TT</span></td>
+								<td colspan="2"><input type="checkbox" id="tt_visible" value="tt_shown" checked> <label for="tt_visible">visible</label></td></tr>
+								<tr><td colspan="2"><input type="checkbox" id="tt_intownonly" value="tt_intownonly" > <label for="tt_intownonly">in town only</label></td></tr>
+								<tr><td>Daily:</td><td><input type="text" id="rate_tt_day" value="39.95" /></td></tr>
+								<tr><td>Sun-Thur Mileage</td><td><input type="text" id="rate_tt_week" value="0.79" /></td></tr>
+								<tr><td>Fri-Sat Mileage</td><td><input type="text" id="rate_tt_weekend" value="0.99" /></td></tr>
+						</table>
+						<table class="itemsettings jh">
+							<tr>
+								<td rowspan="5" class="code"><span>JH</span></td>
+								<td colspan="2"><input type="checkbox" id="jh_visible" value="jh_shown" checked> <label for="jh_visible">visible</label></td></tr>
+								<tr><td colspan="2"><input type="checkbox" id="jh_intownonly" value="jh_intownonly" > <label for="jh_intownonly">in town only</label></td></tr>
+								<tr><td>Daily:</td><td><input type="text" id="rate_jh_day" value="39.95" /></td></tr>
+								<tr><td>Sun-Thur Mileage</td><td><input type="text" id="rate_jh_week" value="0.79" /></td></tr>
+								<tr><td>Fri-Sat Mileage</td><td><input type="text" id="rate_jh_weekend" value="0.99" /></td></tr>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+
 		<p class="updates">updates planned:</p>
 		<ul class="updates">
-			<li>Adding vertical clearance information for vehicles.</li>
 			<li>Tidying up list items.</li>
 			<li>Confirming measurements that have conflicting or missing information on official website.</li>
-			<li>Adding the ability to hide items.</li>
-			<li>Adding the ability to update "In-Town Only" alerts.</li>
-			<li>Adding the ability to update pricing.</li>
+			<li>done: Adding the ability to hide items.</li>
+			<li>done: Adding the ability to update "In-Town Only" alerts.</li>
+			<li>done: Adding the ability to update pricing.</li>
+			<li>Adding the ability to store/recall settings using a unique passphrase.</li>
 		</ul>
-		<p class="credit">(c) 2019, a U-HAUL CSR. Images courtesy of <a href="https://uhaul.com">UHAUL.COM</a>.</p>
+		<p class="credit">(c) 2019 <a href="https://reddit.com/u/UHAULCSR">u/UHAULCSR</a>. Images courtesy of <a href="https://uhaul.com">UHAUL.COM</a>.</p>
 	</div>
-	
-<!-- plans:
-	runHide
-		step through checked checkboxes and concatenate hidevalues // eg. hidevalues=".item.el,"+".item.mv"
-		$(hidevalues).css.display.none
-	check for cookie
-		if no cookie
-			runHide
-			set cookie 
-		if cookie
-			runHide
-		onCheck
-			runHide
--->
+
+	<script>
+		$(document).ready(function(){
+			$(".item").click(function(){
+				$("ul",this).toggle();
+			  }).css('cursor','pointer');
+		
+			if (new Date().getDay() > 4) {$(".weekend.mileage").css('color','#000').css('font-weight','bold');} else {$(".weekday.mileage").css('color','#000').css('font-weight','bold');}
+
+			$('#itemsettings').hide();
+
+			$('ul.itemsettings.groups input[type="checkbox"]').prop('checked',true)
+				// sets all item settings group checkboxes to checked on reload, as it seems some browsers preserve their unchecked state.
+				// The alternative would be to read the checked/not checked state and hide/show the relevant divs, but this is easier.
+
+		    $('ul.itemsettings.groups input[type="checkbox"]').change(function() {
+		    	if($(this).is(":checked")) { $('div' + $(this).data('group')).show()}
+		        if($(this).is(":not(:checked)")) { $('div' + $(this).data('group')).hide()}
+		    });
+
+		    //init:
+		    updateAll();
+		});
+	</script>
+
 </body>
 </html>
