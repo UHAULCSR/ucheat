@@ -48,7 +48,7 @@ function updateItem(item,visible,itonly,day,weekday,weekend) {
 
  function updateUbox(item, visible,itonly,month) {  
  	if (visible == true || visible == 1) { $('div.item.'+item).show() } else { $('div.item.'+item).hide() } 
- 	if (itonly == true || itonly == 1) {$('div.item.'+item+' .itonly').html('<h4 class="alert"><span>It-Town Only</span></h4>').show(); } else { $('div.item.'+item+' .itonly').hide() }
+ 	if (itonly == true || itonly == 1) {$('div.item.'+item+' .itonly').html('<h4 class="alert"><span>In-Town Only</span></h4>').show(); } else { $('div.item.'+item+' .itonly').hide() }
  	$('div.item.'+item+' .price').text('$'+month+' / month + delivery');
  }
 
