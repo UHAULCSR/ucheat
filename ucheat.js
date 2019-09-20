@@ -34,7 +34,7 @@ if (!!$.cookie('settings')) {
 
 function updateItem(item,visible,itonly,day,weekday,weekend) {  
  	if (visible == true || visible == 1) { $('div.item.'+item).show() } else { $('div.item.'+item).hide() } 
- 	if (itonly == true || itonly == 1) {$('div.item.'+item+' .itonly').html('<h4 class="alert"><span>It-Town Only</span></h4>').show(); } else { $('div.item.'+item+' .itonly').hide() }
+ 	if (itonly == true || itonly == 1) {$('div.item.'+item+' .itonly').html('<h4 class="alert"><span>In-Town Only</span></h4>').show(); } else { $('div.item.'+item+' .itonly').hide() }
  	$('div.item.'+item+' .price').text('$'+day+' / day');
  	if (weekday >= 10) weekday = weekday / 100 // just in case the user has entered cents, convert to dollars
  	if (weekend >= 10) weekend = weekend / 100	// this approach assumes no mileage is greater than $10/mile or less than 10 cents/mile
