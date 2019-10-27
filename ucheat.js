@@ -42,7 +42,7 @@ function updateItem(item,visible,itonly,day,weekday,weekend) {
  	if (weekend > 0 ) $('div.item.'+item+' .weekend').text('$'+weekend+'/mile (Fri-Sat)');
  		// default to displaying $x.xx format, but overwrite if we can figure out a nicer way. This SHOULD be converted to an if/else, but this is good enough for now.
 	if (weekday > 0 && weekday < 1) $('div.item.'+item+' .weekday').text((weekday + "").split(".")[1] + '¢/mile (Sun-Thurs)');
- 	if (weekend > 0 && weekday < 1) $('div.item.'+item+' .weekend').text((weekend + "").split(".")[1] + '¢/mile (Fri-Sat)');
+ 	if (weekend > 0 && weekend < 1) $('div.item.'+item+' .weekend').text((weekend + "").split(".")[1] + '¢/mile (Fri-Sat)');
  		// this method converts weekday/weekend to strings, splits them at the decimal, and prints the second part of the array (what's right of the decimal. ideally, we'd check for bad input, but this will do.
  }
 
